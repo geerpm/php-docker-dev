@@ -11,7 +11,7 @@
 ## Requires
 
 - docker, docker-compose https://docs.docker.com/compose/install/#install-compose
-- php (using swagger-php's local yml building)
+- php, composer (using swagger-php's local yml building)
 
 ## Installing
 
@@ -25,6 +25,10 @@ $ git init
 # create laravel project
 $ composer create-project laravel/laravel laravel --prefer-dist
 $ chmod -R 777 laravel/storage
+$ cd laravel
+$ composer require zircote/swagger-php
+# optional
+$ composer require barryvdh/laravel-cors
 ```
 
 ## Getting started
