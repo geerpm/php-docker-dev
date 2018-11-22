@@ -1,0 +1,19 @@
+version: "3.2"
+working_dir: ../
+services:
+  nginx:
+    # buildと同時に使われるとただのimage名
+    image: tp-api-nginx
+    build:
+      context: ../
+      dockerfile: ./docker/nginx/Dockerfile
+    ports:
+      - "80:80"
+      - "81:81"
+    depends_on:
+      - app
+  app:
+    image: tp-api-app
+    build:
+      context: ../
+      dockerfile: ./docker/app/Dockerfile

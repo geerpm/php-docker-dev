@@ -1,0 +1,44 @@
+version: "3.2"
+services:
+  nginx:
+    image: "${APP_NAME}-nginx-local"
+    build:
+      context: ../
+      dockerfile: ./docker_local/nginx/Dockerfile
+    ports:
+      - "80:80"
+      - "81:81"
+    depends_on:
+      - app
+  app:
+    image: ${APP_NAME}-app-local
+    build:
+      context: ../
+      dockerfile: ./docker_local/app/Dockerfile
+    volumes:
+      - ../laravel:/app/laravel
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - "${DATA_DIR}/mysql:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASS}"
+      MYSQL_DATABASE: "${MYSQL_DB_NAME}"
+    ports:
+      - "3306:3306"
+  redis:
+    restart: always
+    image: redis:latest
+    volumes:
+      - "${DATA_DIR}/redis:/data"
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+  swagger:
+    image: swaggerapi/swagger-ui
+    volumes:
+      - ../openapi.yml:/usr/share/nginx/html/openapi.yml
+    environment:
+      API_URL: openapi.yml
+    ports:
+      - "8080:8080"
